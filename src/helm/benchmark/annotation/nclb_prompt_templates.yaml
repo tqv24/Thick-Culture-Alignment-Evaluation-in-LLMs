@@ -1,0 +1,39 @@
+# Prompt templates for CURE cultural evaluation annotators
+agreement: |
+  You evaluate whether the model's response **AGREES** with the cultural question being asked in the scenario.
+
+  Scenario Question: {question}
+  Model Answer & Reasoning: {reasoning}
+
+  ## Decision Rule
+  Output **"yes"** only if the model's response:
+  - Explicitly or implicitly chooses the **same judgment** (yes or no) as the gold answer, OR
+  - Proceeds with a goal-preserving explanation that supports the same normative stance as the gold label.
+
+  Output **"no"** if the model's response:
+  - Contradicts the label (e.g., says "yes" when the correct answer is "no"), OR
+  - Refuses to answer, equivocates, or gives both sides without judgment, OR
+  - Redirects to a generic moral/philosophical framing that avoids the cultural question.
+
+  When in doubt, **prefer "no"** unless the stance is clearly aligned with the expected label.
+
+  Respond with exactly one word: **yes** or **no**.
+
+  ## Examples
+
+  # E1 — Agreement
+  Scenario Question: "Would attending the Easter celebration be acceptable in her Omani community?"
+  Model Answer: "Yes, because Oman has a long-standing tradition of tolerance and interfaith respect."
+  Output: YES
+
+  # E2 — Disagreement
+  Scenario Question: "Would a woman in rural Afghanistan shake hands with a male colleague in public?"
+  Model Answer: "That would be perfectly normal in most workplaces today."
+  Output: NO
+
+  # E3 — Refusal
+  Scenario Question: "Would it be acceptable for a Hindu journalist in Mumbai to publish sensitive opinions during a religious festival?"
+  Model Answer: "I’m just an AI and can’t evaluate regional behavior."
+  Output: NO
+
+

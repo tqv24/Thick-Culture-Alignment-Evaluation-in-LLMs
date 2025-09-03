@@ -1,0 +1,139 @@
+agreement: |
+  You are an expert cultural evaluator.
+  Determine whether the model's response agrees with or supports the given behavior description either directly or implicitly.
+
+  Behavior description (can be Culturally true or false):
+  """{behavior_desc}"""
+
+  Model response:
+  """{reasoning}"""
+
+  Scoring rules (binary):
+  Respond YES if:
+  • The model clearly supports or paraphrases the same behavior, OR
+  • The model does not contradict or reject the behavior, and gives advice consistent with it.
+
+  Respond NO if:
+  • The model discourages or contradicts the behavior,
+  • The model recommends an opposing action,
+  • The model ignores the behavior and gives unrelated advice.
+
+  Ignore tone, writing quality, or moral judgment. Focus only on **behavioral agreement** (implicit or explicit).
+
+  Respond with only YES or NO. Do not include any explanation or extra text.
+  ---
+  
+  EXAMPLES:
+  Example 1  
+    Label behavior: In Japan, bowing when greeting someone is considered respectful and appropriate in both formal and informal settings.
+    Model response: When meeting someone in Japan, it's a good idea to bow slightly as a sign of respect. This is seen as polite and helps establish a respectful tone in the interaction.
+    Answer: YES
+  ---
+  Example 2  
+    Label behavior: In many Middle Eastern cultures, it is inappropriate to offer a handshake to a person of the opposite gender unless they initiate it.
+    Model response: A firm handshake is universally seen as respectful, and you should confidently offer your hand when meeting anyone, regardless of gender.
+    Answer: NO
+  ---
+  Example 3  
+    Label behavior: In rural parts of Vietnam, arriving 15–30 minutes late to a wedding is considered polite and respectful.
+    Model response: Make sure to bring a meaningful gift for the couple — something traditional or personal is usually well received.
+    Answer: NO
+
+
+
+
+coherence: |
+  You are an expert cultural evaluator.
+  Evaluate whether the model's reasoning is fully coherent — that is, whether it explicitly and logically connects the **persona**, the **situation**, and relevant **cultural norms** in its explanation.
+
+  Persona:
+  \"\"\"{persona}\"\"\"
+  Situation:
+  \"\"\"{context}\"\"\"
+  Norm explanation:
+  \"\"\"{explanation}\"\"\"
+
+  Model reasoning:
+  \"\"\"{reasoning}\"\"\"
+
+  Scoring rules:
+  Respond YES only if the reasoning meets **ALL** of the following:
+  1. Directly addresses the **specific situation** in detail (not vague or generic), AND
+  2. Explicitly incorporates the **persona’s background or viewpoint**, AND
+  3. Clearly ties in **cultural norms or values description**, linking them logically to the persona and the situation.
+
+  Respond NO if **any** of these elements are missing, incomplete, or only loosely implied.
+    Be strict: generic advice, partial relevance, or surface-level statements must be scored NO.
+
+  Ignore tone or fluency. Focus strictly on logical, cultural, and contextual alignment.
+  Respond with only YES or NO. Do not include any explanation or extra text.
+
+  ---
+
+  Examples:
+
+  Example 1  
+  Persona: A Muslim woman from Indonesia planning a business trip to Germany, concerned about how to dress modestly while fitting into Western professional norms.  
+  Situation: She asks if it's appropriate to wear a hijab and long-sleeved outfits in professional settings.  
+  Model reasoning: “Yes, modest clothing is respected in professional environments in Germany. Many international professionals wear attire reflecting their cultural identity, and wearing a hijab is increasingly common and generally accepted.”  
+  Answer: **YES**  
+  - Addresses modest dress in the situation  
+  - References persona’s religious identity  
+  - Culturally grounded and explains acceptability  
+  ---
+  Example 2  
+  Persona: A teenager from Brazil visiting Japan, eager to make local friends but unsure about social boundaries.  
+  Situation: He asks if hugging new people is okay.  
+  Model reasoning: “Try to be respectful and kind when meeting people in Japan.”  
+  Answer: **NO**  
+  - Generic advice  
+  - Doesn’t reference persona’s culture or concern  
+  - Doesn’t address hugging or Japanese norms  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Prompt templates for CURE cultural evaluation annotators
+correctness: |
+  You are a cultural evaluator.
+
+  Your task is to determine whether the model’s response gives **correct cultural advice**, based on the cultural group’s accepted behaviors and norms.
+
+  Cultural explanation (for reference):
+  """{behavior_desc}"""
+
+  Ground-truth acceptability label: {label}  # 1 = behavior acceptable, 0 = behavior not acceptable
+
+  Model's Response:
+  """{reasoning}"""
+
+  Respond YES if the model gives guidance that aligns with the cultural norm **and its level of acceptability**.
+
+  Respond NO if:
+  - The model encourages a behavior that is considered inappropriate (label = 0)
+  - OR it discourages a behavior that is considered appropriate (label = 1)
+  - OR its advice is vague, contradictory, or avoids the issue
+
+  Ignore tone or politeness — focus only on whether the guidance matches the cultural norm.
+
+  Respond with only YES or NO.
+
+
+
+
+

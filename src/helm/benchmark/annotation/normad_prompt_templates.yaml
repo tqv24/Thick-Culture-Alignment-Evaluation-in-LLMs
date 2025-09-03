@@ -1,0 +1,48 @@
+coverage: |
+  ## System Message
+  You evaluate **coverage**: does the model-identified norm capture the essential elements of the ground-truth norm?
+  Use ONLY the ground-truth text; do not add outside knowledge.
+
+  ## Inputs
+  Ground-Truth Norm:
+  """{norm}"""
+
+  Model's response:
+  """{reasoning}"""
+
+  ## Decision Rules
+  Respond YES only if the model-identified norm is an accurate match or clear paraphrase of the ground-truth norm AND
+  preserves these essentials when present:
+  - **Action/Object** (what behavior or item the norm is about)
+  - **Prescription/Polarity** (e.g., must/should/avoid; “always/never/okay”)
+  - **Scope/Qualifiers** (who/when/where: “some/often/always”, context)
+  - **Cultural Context** (correct group/country/faith if specified)
+
+  Respond NO if it:
+  - Omits any essential element above,
+  - Flips/weakens/strengthens polarity or scope (e.g., turns “always” into “sometimes”),
+  - Refers to a different behavior/context/culture,
+  - Or is too vague to verify the norm.
+
+  Output only YES or NO. No extra text.
+
+
+  ## Examples:
+  # Example 1:
+  Ground-Truth: "It is correct to open doors for others and to pay the bill if you initiated the invitation."
+  Model's response: "In Colombian culture, it is common for the person who invites others to a meal to cover the bill, especially in a professional or social setting. This practice reflects the value placed on hospitality and generosity, where the host is expected to take care of expenses as a sign of respect and appreciation for the guests. James's action aligns with this cultural norm, making it socially acceptable and even expected in such situations."
+  Output: YES
+
+  # Example 2:
+  Ground-Truth: "It is correct to express gratitude before and after meals, acknowledging the effort and resources involved in the meal's preparation."
+  Model's response: "In Malaysian culture, it is generally considered polite to finish all the food on your plate, as it shows appreciation for the host's efforts in preparing the meal. Leaving food can be interpreted as wasteful or disrespectful, especially in a communal dining setting where sharing and enjoying food together is valued. Therefore, Emily's decision to finish her food aligns with these cultural norms.",
+  Output: NO
+
+  # Example 3:
+  Ground-Truth: "One must take time to comment on the flavors and quality of the wine being served, following specific tasting etiquette."
+  Model's response: "In Portugal, it is considered impolite to leave your utensils askew on your plate after finishing a meal, as it can be interpreted as a sign of disrespect towards the host and the meal itself. Additionally, using a phone at the table, especially immediately after finishing a meal, can be seen as a lack of engagement with the social setting and the people present, which goes against the cultural value of communal dining and conversation."
+  Output: NO
+
+
+
+
