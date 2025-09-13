@@ -77,14 +77,14 @@ def get_reasoning_norms_culturalbank_spec(language: str, country: str) -> RunSpe
     # Add your annotator spec here - call out annotator for each metric in thick culture -> call cure_annotator.py
     annotator_specs = [
         AnnotatorSpec(
-            class_name="helm.benchmark.annotation.culturalbank_annotator.ThickCultureAgreementAnnotator",
+            class_name="helm.benchmark.annotation.cure_annotator.culturalbank_annotator.ThickCultureAgreementAnnotator",
             args={
                 "models": ["openai/gpt-4o-mini-2024-07-18"],
                 "metric": "agreement",
             }
         ),
         AnnotatorSpec(
-            class_name="helm.benchmark.annotation.culturalbank_annotator.ThickCultureCoherenceAnnotator",
+            class_name="helm.benchmark.annotation.cure_annotator.culturalbank_annotator.ThickCultureCoherenceAnnotator",
             args={
                 "models": ["openai/gpt-4o-mini-2024-07-18"],
                 "metric": "coherence",
@@ -149,14 +149,14 @@ def get_reasoning_norms_casa_spec(language: str, country: str) -> RunSpec:
     annotator_specs = [
         
         AnnotatorSpec(
-            class_name="helm.benchmark.annotation.casa_annotator.ThickCultureAgreementAnnotator",
+            class_name="helm.benchmark.annotation.cure_annotator.casa_annotator.ThickCultureAgreementAnnotator",
             args={
                 "models": ["openai/gpt-4o-mini-2024-07-18"],
                 "metric": "agreement",
             }
         ),
         AnnotatorSpec(
-            class_name="helm.benchmark.annotation.casa_annotator.ThickCultureConnotationAnnotator",
+            class_name="helm.benchmark.annotation.cure_annotator.casa_annotator.ThickCultureConnotationAnnotator",
             args={
                 "models": ["openai/gpt-4o-mini-2024-07-18"],
                 "metric": "connotation",
@@ -233,13 +233,13 @@ def get_normad_thick_spec(language: str, country: str) -> RunSpec:
     # Add your annotator spec here - call out annotator for each metric in thick culture -> call cure_annotator.py
     annotator_specs = [
         AnnotatorSpec(
-            class_name="helm.benchmark.annotation.normad_annotator.ThickCultureAgreementAnnotator",
+            class_name="helm.benchmark.annotation.cure_annotator.normad_annotator.ThickCultureAgreementAnnotator",
             args={
                 "metric": "agreement",
             }
         ),
         AnnotatorSpec(
-            class_name="helm.benchmark.annotation.normad_annotator.ThickCultureCoverageAnnotator",
+            class_name="helm.benchmark.annotation.cure_annotator.normad_annotator.ThickCultureCoverageAnnotator",
             args={
                 "models": ["openai/gpt-4o-mini-2024-07-18"],
                 "metric": "coverage",
@@ -308,13 +308,13 @@ def get_nclb_thick_spec(language: str, country: str) -> RunSpec:
     # Add your annotator spec here - call out annotator for each metric in thick culture -> call cure_annotator.py
     annotator_specs = [
         AnnotatorSpec(
-            class_name="helm.benchmark.annotation.nclb_annotator.ThickCultureAgreementAnnotator",
+            class_name="helm.benchmark.annotation.cure_annotator.nclb_annotator.ThickCultureAgreementAnnotator",
             args={
                 "metric": "agreement",
             }
         ),
         AnnotatorSpec(
-            class_name="helm.benchmark.annotation.nclb_annotator.ThickCultureSpecificityAnnotator",
+            class_name="helm.benchmark.annotation.cure_annotator.nclb_annotator.ThickCultureSpecificityAnnotator",
             args={
                 "metric": "specificity",
             }
@@ -344,85 +344,4 @@ def get_nclb_thick_spec(language: str, country: str) -> RunSpec:
 
 
 
-
-
-
-
-
-# @run_spec_function("daily_dilemmas_thin")
-# def get_daily_dilemmas_thin_spec(language: str, country: str) -> RunSpec:
-#     scenario_spec = ScenarioSpec(
-#         class_name="helm.benchmark.scenarios.cure_scenarios.DailyDilemmasThinScenario",
-#         args={
-#             "language": language,
-#         },
-#     )
-
-#     adapter_spec = get_generation_adapter_spec(
-#         max_tokens=5,
-#         num_outputs=5,
-#         stop_sequences=[],
-#     )
-
-#     return RunSpec(
-#         name="daily_dilemmas_thin",
-#         scenario_spec=scenario_spec,
-#         adapter_spec=adapter_spec,
-#         metric_specs=get_exact_match_metric_specs() + get_f1_metric_specs(),
-#         groups=["cure", "daily_dilemmas_thin"],
-#     )
-
-
-
-# @run_spec_function("daily_dilemmas_thick")
-# def get_daily_dilemmas_thick_spec(language: str, country: str) -> RunSpec:
-#     scenario_spec = ScenarioSpec(
-#         class_name="helm.benchmark.scenarios.cure_scenarios.DailyDilemmasThickScenario",
-#         args={
-#             "language": language,
-#         },
-#     )
-
-#     adapter_spec = get_generation_adapter_spec(
-#         max_tokens=128,
-#         stop_sequences=[],
-#     )
-
-#     # Add your annotator spec here - call out annotator for each metric in thick culture -> call cure_annotator.py
-#     annotator_specs = [
-#         AnnotatorSpec(
-#             class_name="helm.benchmark.annotation.normad_annotator.ThickCultureCoverageAnnotator",
-#             args={
-#                 "models": ["openai/gpt-4o-mini-2024-07-18"],
-#                 "metric": "coverage",
-#             }
-#         ),
-#     ]
-
-#     metric_specs = (
-#         get_open_ended_generation_metric_specs() # metrics: bleu, rouge, bert_score, 
-#         + get_semantic_similarity_metric_specs() # metrics: cosine similarity
-#         + get_thick_culture_coverage_metric_specs()
-#         + get_toxicity_metric_specs() # metrics: toxicity
-#     )
-
-#     return RunSpec(
-#         name="daily_dilemmas_thick",
-#         scenario_spec=scenario_spec,
-#         adapter_spec=adapter_spec,
-#         annotators=annotator_specs,
-#         metric_specs=metric_specs,
-#         groups=["cure", "daily_dilemmas_thick"],
-#     )
-#         + get_toxicity_metric_specs() # metrics: toxicity
-#     )
-
-#     return RunSpec(
-#         name="daily_dilemmas_thick",
-#         scenario_spec=scenario_spec,
-#         adapter_spec=adapter_spec,
-#         annotators=annotator_specs,
-#         metric_specs=metric_specs,
-#         groups=["cure", "daily_dilemmas_thick"],
-#     )
 
