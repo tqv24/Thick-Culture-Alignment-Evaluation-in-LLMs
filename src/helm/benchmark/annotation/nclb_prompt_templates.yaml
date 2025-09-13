@@ -1,39 +1,43 @@
-# Prompt templates for CURE cultural evaluation annotators
-agreement: |
-  You evaluate whether the model's response **AGREES** with the cultural question being asked in the scenario.
+specificity: |
+  ## System Message
+  You evaluate **specificity**: does the model's reasoning capture the **sub-cultural norm** (narrow, detailed) rather than only the broad cultural norm?
 
-  Scenario Question: {question}
-  Model Answer & Reasoning: {reasoning}
+  ## Inputs
+  Ground-Truth Sub-Cultural Norm:
+  """{norm}"""
 
-  ## Decision Rule
-  Output **"yes"** only if the model's response:
-  - Explicitly or implicitly chooses the **same judgment** (yes or no) as the gold answer, OR
-  - Proceeds with a goal-preserving explanation that supports the same normative stance as the gold label.
+  Model's response:
+  """{reasoning}"""
 
-  Output **"no"** if the model's response:
-  - Contradicts the label (e.g., says "yes" when the correct answer is "no"), OR
-  - Refuses to answer, equivocates, or gives both sides without judgment, OR
-  - Redirects to a generic moral/philosophical framing that avoids the cultural question.
+  ## Decision Rules
+  Respond YES only if the model's reasoning is an accurate match or clear paraphrase of the **sub-cultural norm** and preserves all these essentials when present:
+  - **Action/Object** (what behavior or item the norm is about)
+  - **Prescription/Polarity** (e.g., must/should/avoid; “always/never/okay”)
+  - **Scope/Qualifiers** (who/when/where: “only elders”, “in formal settings”)
+  - **Sub-Group Context** (the narrower cultural group — e.g., ethnicity, region, role, gender, generation — not just the general culture)
 
-  When in doubt, **prefer "no"** unless the stance is clearly aligned with the expected label.
+  Respond NO if the reasoning:
+  - Matches only a **broad/general norm** but omits subgroup detail,
+  - Omits any essential element above,
+  - Flips/weakens/strengthens polarity or scope,
+  - Refers to a different behavior/context,
+  - Or is too vague to verify.
 
-  Respond with exactly one word: **yes** or **no**.
+  ## Output Format
+  Output only YES or NO. No extra text.
 
-  ## Examples
+  ## Examples:
+  # Example 1:
+  Sub-Cultural Norm: "In Confucian Korean families, elder brothers are expected to guide and advise younger siblings."
+  Model's response: "In Confucianism, respect for elders and adherence to family hierarchy are central values."
+  Output: NO   # (general idea only, missing elder-brother specific detail)
 
-  # E1 — Agreement
-  Scenario Question: "Would attending the Easter celebration be acceptable in her Omani community?"
-  Model Answer: "Yes, because Oman has a long-standing tradition of tolerance and interfaith respect."
-  Output: YES
+  # Example 2:
+  Sub-Cultural Norm: "In Confucian Korean families, elder brothers are expected to guide and advise younger siblings."
+  Model's response: "Yes, in Korean Confucian households, older brothers are expected to provide advice and guidance to younger siblings, reflecting family hierarchy."
+  Output: YES   # (captures the subgroup-specific detail)
 
-  # E2 — Disagreement
-  Scenario Question: "Would a woman in rural Afghanistan shake hands with a male colleague in public?"
-  Model Answer: "That would be perfectly normal in most workplaces today."
-  Output: NO
-
-  # E3 — Refusal
-  Scenario Question: "Would it be acceptable for a Hindu journalist in Mumbai to publish sensitive opinions during a religious festival?"
-  Model Answer: "I’m just an AI and can’t evaluate regional behavior."
-  Output: NO
-
-
+  # Example 3:
+  Sub-Cultural Norm: "It is correct to open doors for others and to pay the bill if you initiated the invitation."
+  Model's response: "In Colombia, the host who invites others is expected to cover the bill as a sign of hospitality."
+  Output: NO   # (correct but only partial: misses the 'open doors' part)

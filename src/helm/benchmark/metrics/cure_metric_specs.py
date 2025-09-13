@@ -58,7 +58,7 @@ def get_thick_culture_specificity_metric_specs() -> List[MetricSpec]:
     return [
         MetricSpec(
             class_name="helm.benchmark.metrics.cure_metrics.ThickCultureSpecificityMetric",
-            args={},
+            args={"metric_name": "specificity"},
         )
     ]
 

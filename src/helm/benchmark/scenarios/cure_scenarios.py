@@ -347,50 +347,24 @@ class NCLBThinScenario(Scenario):
             raise ValueError(f"Unsupported language: {self.language}. Supported languages are: {SUPPORTED_LANGUAGES}")
 
     def get_instances(self, output_path: str) -> List[Instance]:
-        dataset = load_dataset("tqv25/nclb_trial", split="train")  # use generated data
+        dataset = load_dataset("tqv25/nclb", split="train")  # use generated data
 
         instances: List[Instance] = []
 
         for item in dataset:
-            # Use extraction-style cultural context formatting
-            cultural_context = []
-            if item.get('country') and item['country'] != 'None':
-                cultural_context.append(f"Country: {item['country']}")
-            if item.get('religion') and item['religion'] != 'None':
-                cultural_context.append(f"Religion: {item['religion']}")
-            if item.get('ethnicity') and item['ethnicity'] != 'None':
-                cultural_context.append(f"Ethnicity: {item['ethnicity']}")
-            if item.get('age') and item['age'] != 'None':
-                cultural_context.append(f"Age group: {item['age']}")
-            if item.get('gender') and item['gender'] != 'None':
-                cultural_context.append(f"Gender: {item['gender']}")
-            if item.get('marital_status') and item['marital_status'] != 'None':
-                cultural_context.append(f"Marital status: {item['marital_status']}")
-            if item.get('occupation') and item['occupation'] != 'None':
-                cultural_context.append(f"Occupation: {item['occupation']}")
-
-            context_str = "\n".join(cultural_context) if cultural_context else "General population"
 
             input_text = f"""You are a cultural reasoning assistant trained to evaluate social norms of {item['country'].capitalize()}.
-                Read the following scenario and determine whether the behavior would be considered acceptable in the below cultural community.
-                **Cultural Context**: 
-                {context_str}
+                Read the following situation and  answer the question to determine whether the behavior would be considered acceptable.
 
                 Here is the given scenario:
-                **Persona**:
                 {item['persona']}
-
-                **Situation**:
                 {item['situation']}
 
-                **Question**:
-                {item['question']}
-
-                Answer the question with 'yes' if the behavior is considered acceptable in the community, otherwise answer 'no'.
+                Answer the question: {item['question']} with 'yes' if the behavior is considered acceptable in the community, otherwise answer 'no'.
                 Return only one word: 'yes' or 'no'."""
 
             instance = Instance(
-                input=Input(text=input_text.strip()),
+                input=Input(text=input_text),
                 references=[Reference(Output(text=item["label"].strip().lower()), tags=[CORRECT_TAG])],
                 split=TEST_SPLIT,
                 id=f"thin_{item.get('id', len(instances))}"
@@ -416,55 +390,30 @@ class NCLBThickScenario(Scenario):  ### Provide reasoning and explanation for so
             raise ValueError(f"Unsupported language: {self.language}. Supported languages are: {SUPPORTED_LANGUAGES}")
 
     def get_instances(self, output_path: str) -> List[Instance]:
-        dataset = load_dataset("tqv25/nclb_trial", split="train")
+        dataset = load_dataset("tqv25/nclb", split="train")
 
         instances: List[Instance] = []
 
         for item in dataset:
-            # Extract cultural context in preferred format
-            cultural_context = []
-            if item.get('country') and item['country'] != 'None':
-                cultural_context.append(f"Country: {item['country']}")
-            if item.get('religion') and item['religion'] != 'None':
-                cultural_context.append(f"Religion: {item['religion']}")
-            if item.get('ethnicity') and item['ethnicity'] != 'None':
-                cultural_context.append(f"Ethnicity: {item['ethnicity']}")
-            if item.get('age') and item['age'] != 'None':
-                cultural_context.append(f"Age group: {item['age']}")
-            if item.get('gender') and item['gender'] != 'None':
-                cultural_context.append(f"Gender: {item['gender']}")
-            if item.get('marital_status') and item['marital_status'] != 'None':
-                cultural_context.append(f"Marital status: {item['marital_status']}")
-            if item.get('occupation') and item['occupation'] != 'None':
-                cultural_context.append(f"Occupation: {item['occupation']}")
 
-            context_str = "\n".join(cultural_context) if cultural_context else "General population"
 
-            input_text = (
-                f"You are a cultural reasoning assistant trained to evaluate social norms.\n"
-                f"Read the following scenario and determine whether the behavior would be considered acceptable\n"
-                f"in the described cultural community. Then explain your answer in 2–4 sentences, making sure your explanation:\n"
-                f"- Refers to the relevant cultural norm or value.\n"
-                f"- Links it to the specific situation.\n"
-                f"- Grounds it in the subgroup’s characteristics if applicable.\n"
-                f"\n"
-                f"**Cultural Context**:\n{context_str}\n"
-                f"\n"
-                f"**Persona**:\n{item['persona']}\n"
-                f"\n"
-                f"**Situation**:\n{item['situation']}\n"
-                f"\n"
-                f"**Question**:\n{item['question']}\n"
-                f"\n"
-                f"Answer with 'yes' or 'no', followed by a short explanation (2–4 sentences)."
-            )
+            input_text = f"""You are a cultural reasoning assistant trained to evaluate social norms of {item['country'].capitalize()}.
+            Read the following scenario and answer the question about whether the behavior is considered acceptable in the described community.
+            Make sure your explanation is specific to the details of the situation and persona.
 
+            Scenario:
+            {item['persona']}
+            {item['situation']}
+
+            Question: {item['question']}
+
+            Return your answer ('yes' or 'no') and a brief explanation (2-3 sentences).
+            Do not make up any unfounded statements or claims. Be as specific and culturally grounded as possible.
+            """
             instance = Instance(
                 input=Input(text=input_text.strip()),
                 references=[
                     Reference(Output(text=item["statement"].strip()), tags=[CORRECT_TAG]),
-                    Reference(Output(text=item["generic_norm"].strip()), tags=[CORRECT_TAG]),
-                    Reference(Output(text=item["question"].strip()), tags=[CORRECT_TAG]),
                     Reference(Output(text=item["label"].strip().lower()), tags=[CORRECT_TAG]),
                 ],
                 split=TEST_SPLIT,
@@ -494,7 +443,6 @@ class NCLBThickScenario(Scenario):  ### Provide reasoning and explanation for so
 
 
 
-# ### CONCEPT 3: Navigating institutions & dilemmas   
 
 # ### DailyDilemmas
 # class DailyDilemmasThinScenario(Scenario):
@@ -590,10 +538,6 @@ class NCLBThickScenario(Scenario):  ### Provide reasoning and explanation for so
 #             instances.append(instance)
 #         return instances
 
-    
-
-
-
 
 # ### MIC 
 # class MICApplicationScenario(Scenario):
@@ -609,11 +553,11 @@ class NCLBThickScenario(Scenario):  ### Provide reasoning and explanation for so
 
 
 
-### MAPS
-    # MAPS (MulticulturAl Proverbs and Sayings) containing 2,313 proverbs from six lan-
-    # guages (English, German, Russian, Bengali, Chinese, Indonesian) with binary-choice inference
-    # tasks for interpreting proverbs within conversational contexts and figurative/literal interpretation
-    # labels.
-    # tasks for interpreting proverbs within conversational contexts and figurative/literal interpretation
-    # labels.
+# ## MAPS
+#     MAPS (MulticulturAl Proverbs and Sayings) containing 2,313 proverbs from six lan-
+#     guages (English, German, Russian, Bengali, Chinese, Indonesian) with binary-choice inference
+#     tasks for interpreting proverbs within conversational contexts and figurative/literal interpretation
+#     labels.
+#     tasks for interpreting proverbs within conversational contexts and figurative/literal interpretation
+#     labels.
 

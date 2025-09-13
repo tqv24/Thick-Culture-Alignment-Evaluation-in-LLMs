@@ -313,6 +313,12 @@ def get_nclb_thick_spec(language: str, country: str) -> RunSpec:
                 "metric": "agreement",
             }
         ),
+        AnnotatorSpec(
+            class_name="helm.benchmark.annotation.nclb_annotator.ThickCultureSpecificityAnnotator",
+            args={
+                "metric": "specificity",
+            }
+        ),
     ]
 
     metric_specs = (
