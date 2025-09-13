@@ -5,7 +5,7 @@ This repository extends the HELM framework with custom scenarios, metrics, and a
 ## Key Features
 
 - **Rich Test Cases:**
-  - Multiple cultural scenarios (CulturalBank, CASA, NormAD, NCLB, etc.)
+  - Multiple cultural scenarios (CulturalBank, CASA, NormAD, and NCLB)
   - "Thin" (direct norm application) and "thick" (reasoning/explanation) variants
   - Multi-language and multi-country support
   - Easily extensible for new cultural or normative test cases
