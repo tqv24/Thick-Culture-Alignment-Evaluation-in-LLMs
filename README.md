@@ -1,6 +1,8 @@
-# CURE-HELM Benchmark: Cultural Undertsanding and Reasoning Evaluation 
+# cURe: Cultural Undertsanding and Reasoning Evaluation 
 
 This repository extends the HELM framework with custom scenarios, metrics, and annotators for evaluating large language models (LLMs) on cultural reasoning and norm adaptation tasks.
+
+![alt text](<ChatGPT Image Sep 13, 2025, 09_30_53 PM.png>)
 
 ## Key Features
 
