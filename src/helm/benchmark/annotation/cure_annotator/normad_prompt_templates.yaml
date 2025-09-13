@@ -1,7 +1,7 @@
 coverage: |
   ## System Message
-  You evaluate **coverage**: does the model-identified norm capture the essential elements of the ground-truth norm?
-  Use ONLY the ground-truth text; do not add outside knowledge.
+  You evaluate **coverage**: does the model's response capture the essential elements of the ground-truth norm?
+  Use ONLY the ground-truth norm; do not add outside knowledge.
 
   ## Inputs
   Ground-Truth Norm:

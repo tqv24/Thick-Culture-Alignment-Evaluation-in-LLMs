@@ -103,37 +103,3 @@ coherence: |
 
 
 
-
-
-
-
-
-# Prompt templates for CURE cultural evaluation annotators
-correctness: |
-  You are a cultural evaluator.
-
-  Your task is to determine whether the model’s response gives **correct cultural advice**, based on the cultural group’s accepted behaviors and norms.
-
-  Cultural explanation (for reference):
-  """{behavior_desc}"""
-
-  Ground-truth acceptability label: {label}  # 1 = behavior acceptable, 0 = behavior not acceptable
-
-  Model's Response:
-  """{reasoning}"""
-
-  Respond YES if the model gives guidance that aligns with the cultural norm **and its level of acceptability**.
-
-  Respond NO if:
-  - The model encourages a behavior that is considered inappropriate (label = 0)
-  - OR it discourages a behavior that is considered appropriate (label = 1)
-  - OR its advice is vague, contradictory, or avoids the issue
-
-  Ignore tone or politeness — focus only on whether the guidance matches the cultural norm.
-
-  Respond with only YES or NO.
-
-
-
-
-
